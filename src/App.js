@@ -10,11 +10,15 @@ function App () {
     const query = window.getSelection().toString().trim()
     if (query) {
       setIsLoading(true)
-      const response = await fetch(`https://api.datamuse.com/words?ml=${query}&max=10`)
-      const data = await response.json()
-      const results = data.filter(word => word.tags.includes('syn'))
-      setWordQuery(query)
-      setSynonyms(results)
+      try {
+        const response = await fetch(`https://api.datamuse.com/words?ml=${query}&max=10`)
+        const data = await response.json()
+        const results = data.filter(word => word.tags.includes('syn'))
+        setWordQuery(query)
+        setSynonyms(results)
+      } catch {
+        clearAssistant()
+      }
       setIsLoading(false)
     }
   }
